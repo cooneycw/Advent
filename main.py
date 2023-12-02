@@ -1,4 +1,4 @@
-from src_code.code02.assign_b import solver
+from src_code.code03.assign_a import solver
 
 
 def control():
@@ -14,19 +14,16 @@ def control():
 
 
 def main(code):
-    limits = dict()
-    limits['blue'] = 14
-    limits['green'] = 13
-    limits['red'] = 12
+    input_dict = {}
     if code == 'dev':
-        file_name = 'src_code/input/02/dev_a.txt'
+        file_name = 'src_code/input/03/dev_a.txt'
     elif code == 'prod':
-        file_name = 'src_code/input/02/prod.txt'
+        file_name = 'src_code/input/03/prod.txt'
 
     with open(file_name, 'r') as file:
         text = file.read()
 
-    solver(limits, text)
+    solver(input_dict, text)
 
 
 # Press the green button in the gutter to run the script.
