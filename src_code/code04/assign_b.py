@@ -1,18 +1,24 @@
 def solver(inp_dict, data_file):
     print(f'type of data: {type(data_file)}  length of data: {len(data_file)}')
     game_list, winning_list, elf_list = parser(data_file)
+    win_multiplier = len(winning_list) * [1]
 
     winning_points = []
+    i = 0
     for i, lottery in enumerate(winning_list):
         winning_set = set(lottery)
         elf_set = set(elf_list[i])
         winning_numbs = winning_set.intersection(elf_set)
-        points = 2**(len(winning_numbs) - 1)
-        if points == 0.5:
-            points = 0
-        winning_points.append(points)
-    print(f'winning_points: {winning_points}')
-    print(f'the sum is: {sum(winning_points)}')
+        points = len(winning_numbs)
+
+        card_dupl = [j for j in range(i + 1, 1 + i + points)]
+        for q in range(win_multiplier[i]):
+            for j in card_dupl:
+                #print(f'i: {i} j: {j} q: {q} points: {points} win_multiplier: {win_multiplier} card_dupl: {card_dupl}')
+                win_multiplier[j] = win_multiplier[j] + 1
+
+    print(f'win_multiplier: {win_multiplier}')
+    print(f'the sum is: {sum(win_multiplier)}')
     return
 
 

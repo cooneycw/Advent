@@ -1,4 +1,4 @@
-from src_code.code04.assign_a import solver
+from src_code.code05.assign_a import solver
 
 
 def control():
@@ -16,9 +16,9 @@ def control():
 def main(code):
     input_dict = {}
     if code == 'dev':
-        file_name = 'src_code/input/04/dev_a.txt'
+        file_name = 'src_code/input/05/dev_a.txt'
     elif code == 'prod':
-        file_name = 'src_code/input/04/prod.txt'
+        file_name = 'src_code/input/05/prod.txt'
 
     with open(file_name, 'r') as file:
         text = file.read()
