@@ -1,9 +1,6 @@
-import multiprocessing
-
-
-def parallel_process(args):
-    data_file, seed_a, i = args
-    seeds = process_seeds([seed_a[2*i], seed_a[2*i + 1]])
+def solver(inp_dict, data_file):
+    print(f'type of data: {type(data_file)}  length of data: {len(data_file)}')
+    seeds = parser('seeds', data_file)
     sts_s, sts_d = process(parser('sts', data_file))
     stf_s, stf_d = process(parser('stf', data_file))
     ftw_s, ftw_d = process(parser('ftw', data_file))
@@ -12,45 +9,24 @@ def parallel_process(args):
     tth_s, tth_d = process(parser('tth', data_file))
     htl_s, htl_d = process(parser('htl', data_file))
 
-    location = 10000000000
-    llocation = location
-    for q, seed in enumerate(seeds):
-        soil = func_map(seed, sts_s, sts_d)
-        fert = func_map(soil, stf_s, stf_d)
-        watr = func_map(fert, ftw_s, ftw_d)
-        lght = func_map(watr, wtl_s, wtl_d)
-        temp = func_map(lght, ltt_s, ltt_d)
-        humd = func_map(temp, tth_s, tth_d)
-        locn = func_map(humd, htl_s, htl_d)
-        location = min(locn, location)
-        if location != llocation or q % 10000000 == 0:
-            print(f'batch i:{i} seed: {seed} completion: {100 * q / len(seeds):.1f}% new location: {location}')
-            llocation = location
+    location = []
+    for seed in seeds:
+        soil = map(seed, sts_s, sts_d)
+        fert = map(soil, stf_s, stf_d)
+        watr = map(fert, ftw_s, ftw_d)
+        lght = map(watr, wtl_s, wtl_d)
+        temp = map(lght, ltt_s, ltt_d)
+        humd = map(temp, tth_s, tth_d)
+        location.append(map(humd, htl_s, htl_d))
 
-    print(f'batch {i} completed. seeds evaluated: {len(seeds)} min location: {location}')
-    return location
+    print(f'min location is: {min(location)}')
 
 
-def solver(inp_dict, data_file):
-    print(f'type of data: {type(data_file)}  length of data: {len(data_file)}')
-    seed_a = parser('seeds', data_file)
-    iters = int(len(seed_a)/2)
-
-    pool = multiprocessing.Pool(3)
-    tasks = [(data_file, seed_a, i) for i in range(iters)]
-    results = pool.map(parallel_process, tasks)
-    pool.close()
-    pool.join()
-
-    location = min(results)
-    print(f'min location is: {location}')
-
-
-def func_map(seed, _s, _d):
+def map(seed, _s, _d):
     map_val = None
 
     for i, source in enumerate(_s):
-        if source[0] <= seed < source[1]:
+        if source[0] <= seed <= source[1]:
             map_val = _d[i][0] + seed-source[0]
 
     if map_val is None:
@@ -178,10 +154,3 @@ def process(val_list):
         dest.append((val_list[i + 0], val_list[i+0] + val_list[i + 2]))
 
     return source, dest
-
-
-def process_seeds(seed_data):
-    seeds = []
-    for i in [x for x in range(0, len(seed_data), 2)]:
-        seeds.extend([seed_data[i] + j for j in range(0, seed_data[i+1], 1)])
-    return seeds
