@@ -1,6 +1,6 @@
 def solver(inp_dict, data_file):
     print(f'type of data: {type(data_file)}  length of data: {len(data_file)}')
-    seeds = parser('seeds', data_file)
+    seeds = process_seeds(parser('seeds', data_file))
     sts_s, sts_d = process(parser('sts', data_file))
     stf_s, stf_d = process(parser('stf', data_file))
     ftw_s, ftw_d = process(parser('ftw', data_file))
@@ -9,24 +9,29 @@ def solver(inp_dict, data_file):
     tth_s, tth_d = process(parser('tth', data_file))
     htl_s, htl_d = process(parser('htl', data_file))
 
-    location = []
-    for seed in seeds:
-        soil = map(seed, sts_s, sts_d)
-        fert = map(soil, stf_s, stf_d)
-        watr = map(fert, ftw_s, ftw_d)
-        lght = map(watr, wtl_s, wtl_d)
-        temp = map(lght, ltt_s, ltt_d)
-        humd = map(temp, tth_s, tth_d)
-        location.append(map(humd, htl_s, htl_d))
+    location = 10000000000
+    for q, seed in enumerate(seeds):
+        for j in range(seed[0], seed[0] + seed[1]):
+            soil = map(j, sts_s, sts_d)
+            fert = map(soil, stf_s, stf_d)
+            watr = map(fert, ftw_s, ftw_d)
+            lght = map(watr, wtl_s, wtl_d)
+            temp = map(lght, ltt_s, ltt_d)
+            humd = map(temp, tth_s, tth_d)
+            locn = map(humd, htl_s, htl_d)
+            # print(f'seed: {j} soil: {soil} fert: {fert} watr: {watr} lght: {lght} temp: {temp} humd: {humd} locn: {locn}')
+            location = min(locn, location)
+        if q % 1 == 0:
+            print(f'q: {q} seed: {seed[1]}  location: {location}')
 
-    print(f'min location is: {min(location)}')
+    print(f'min location is: {location}')
 
 
 def map(seed, _s, _d):
     map_val = None
 
     for i, source in enumerate(_s):
-        if source[0] <= seed <= source[1]:
+        if source[0] <= seed < source[1]:
             map_val = _d[i][0] + seed-source[0]
 
     if map_val is None:
@@ -154,3 +159,10 @@ def process(val_list):
         dest.append((val_list[i + 0], val_list[i+0] + val_list[i + 2]))
 
     return source, dest
+
+
+def process_seeds(seed_data):
+    seeds = []
+    for i in [x for x in range(0, len(seed_data), 2)]:
+        seeds.append((seed_data[i], seed_data[i+1]))
+    return seeds

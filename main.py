@@ -1,4 +1,4 @@
-from src_code.code05.assign_a import solver
+from src_code.code05.assign_d import solver
 
 
 def control():

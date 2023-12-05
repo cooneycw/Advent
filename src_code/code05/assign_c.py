@@ -1,32 +1,41 @@
 def solver(inp_dict, data_file):
     print(f'type of data: {type(data_file)}  length of data: {len(data_file)}')
-    seeds = parser('seeds', data_file)
-    sts_s, sts_d = process(parser('sts', data_file))
-    stf_s, stf_d = process(parser('stf', data_file))
-    ftw_s, ftw_d = process(parser('ftw', data_file))
-    wtl_s, wtl_d = process(parser('wtl', data_file))
-    ltt_s, ltt_d = process(parser('ltt', data_file))
-    tth_s, tth_d = process(parser('tth', data_file))
-    htl_s, htl_d = process(parser('htl', data_file))
+    seed_a = parser('seeds', data_file)
+    iters = int(len(seed_a)/2)
+    location = 10000000000
+    llocation = location
+    for i in range(iters):
+        seeds = process_seeds([seed_a[2*i], seed_a[2*i + 1]])
+        sts_s, sts_d = process(parser('sts', data_file))
+        stf_s, stf_d = process(parser('stf', data_file))
+        ftw_s, ftw_d = process(parser('ftw', data_file))
+        wtl_s, wtl_d = process(parser('wtl', data_file))
+        ltt_s, ltt_d = process(parser('ltt', data_file))
+        tth_s, tth_d = process(parser('tth', data_file))
+        htl_s, htl_d = process(parser('htl', data_file))
 
-    location = []
-    for seed in seeds:
-        soil = map(seed, sts_s, sts_d)
-        fert = map(soil, stf_s, stf_d)
-        watr = map(fert, ftw_s, ftw_d)
-        lght = map(watr, wtl_s, wtl_d)
-        temp = map(lght, ltt_s, ltt_d)
-        humd = map(temp, tth_s, tth_d)
-        location.append(map(humd, htl_s, htl_d))
+        for q, seed in enumerate(seeds):
+            soil = map(seed, sts_s, sts_d)
+            fert = map(soil, stf_s, stf_d)
+            watr = map(fert, ftw_s, ftw_d)
+            lght = map(watr, wtl_s, wtl_d)
+            temp = map(lght, ltt_s, ltt_d)
+            humd = map(temp, tth_s, tth_d)
+            locn = map(humd, htl_s, htl_d)
+            # print(f'seed: {j} soil: {soil} fert: {fert} watr: {watr} lght: {lght} temp: {temp} humd: {humd} locn: {locn}')
+            location = min(locn, location)
+            if location != llocation or int(100 * q/len(seeds)) == 20:
+                print(f'q: {q} seed: {seed} completion: {100 * q/len(seeds):.1f}% location: {location}')
+                llocation = location
 
-    print(f'min location is: {min(location)}')
+    print(f'min location is: {location}')
 
 
 def map(seed, _s, _d):
     map_val = None
 
     for i, source in enumerate(_s):
-        if source[0] <= seed <= source[1]:
+        if source[0] <= seed < source[1]:
             map_val = _d[i][0] + seed-source[0]
 
     if map_val is None:
@@ -154,3 +163,10 @@ def process(val_list):
         dest.append((val_list[i + 0], val_list[i+0] + val_list[i + 2]))
 
     return source, dest
+
+
+def process_seeds(seed_data):
+    seeds = []
+    for i in [x for x in range(0, len(seed_data), 2)]:
+        seeds.extend([seed_data[i] + j for j in range(0, seed_data[i+1], 1)])
+    return seeds
