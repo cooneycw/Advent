@@ -1,4 +1,4 @@
-from src_code.code07.assign_b import solver
+from src_code.code08.assign_a import solver
 
 
 def control():
@@ -17,10 +17,10 @@ def main(code):
     input_dict = {}
     if code == 'dev':
         # input_dict = input_dict_dev_b
-        file_name = 'src_code/input/07/dev_a.txt'
+        file_name = 'src_code/input/Archive/08/dev_a.txt'
     elif code == 'prod':
         # input_dict = input_dict_prod_b
-        file_name = 'src_code/input/07/prod.txt'
+        file_name = 'src_code/input/Archive/08/prod.txt'
 
     with open(file_name, 'r') as file:
          text = file.read()
