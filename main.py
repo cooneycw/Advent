@@ -1,5 +1,5 @@
 import importlib
-DAY = '07'
+DAY = '08'
 RUN_GET_DATA = True  # True = create dev and prod files
 ROUTINE_TYPE = 1  # 0 = dev; 1 = prod
 
