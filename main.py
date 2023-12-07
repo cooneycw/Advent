@@ -1,4 +1,4 @@
-from src_code.code06.assign_b import solver
+from src_code.code07.assign_b import solver
 
 
 def control():
@@ -14,33 +14,16 @@ def control():
 
 
 def main(code):
-    input_dict_dev_a = {
-        'Time': [7, 15, 30],
-        'Distance': [9, 40, 200],
-    }
-    input_dict_dev_b = {
-        'Time': 71530,
-        'Distance': 940200,
-    }
-    input_dict_prod_a = {
-        'Time': [49, 78, 79, 80],
-        'Distance': [298, 1185, 1066, 1181],
-    }
-    input_dict_prod_b = {
-        'Time': 49787980,
-        'Distance': 298118510661181,
-    }
-
+    input_dict = {}
     if code == 'dev':
-        input_dict = input_dict_dev_b
-        # file_name = 'src_code/input/06/dev_a.txt'
+        # input_dict = input_dict_dev_b
+        file_name = 'src_code/input/07/dev_a.txt'
     elif code == 'prod':
-        input_dict = input_dict_prod_b
-        #file_name = 'src_code/input/06/prod.txt'
+        # input_dict = input_dict_prod_b
+        file_name = 'src_code/input/07/prod.txt'
 
-    # with open(file_name, 'r') as file:
-    #    text = file.read()
-    text = dict()
+    with open(file_name, 'r') as file:
+         text = file.read()
 
     solver(input_dict, text)
 
