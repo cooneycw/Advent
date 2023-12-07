@@ -1,34 +1,40 @@
-from src_code.code08.assign_a import solver
+import importlib
+DAY = '07'
+RUN_GET_DATA = True  # True = create dev and prod files
+ROUTINE_TYPE = 1  # 0 = dev; 1 = prod
+
+YEAR = 2023
+ROUTINE = ['dev', 'prod']
+
+if ROUTINE[ROUTINE_TYPE] == 'dev':
+    module_name = 'src_code.code' + DAY + '.assign_a'
+elif ROUTINE[ROUTINE_TYPE] == 'prod':
+    module_name = 'src_code.code' + DAY + '.assign_b'
+
+src_code = importlib.import_module(module_name)
+get_data = importlib.import_module('get_data')
 
 
-def control():
-    # Use a breakpoint in the code line below to debug your script.
-    while True:
-        cwc = input('Run development or prod:\n')
-        if cwc == 'dev':
-            main('dev')
-        elif cwc == 'prod':
-            main('prod')
-        print('\n')
-        break
+def main():
+    print(f'\nExecuting day {DAY} routine in {ROUTINE[ROUTINE_TYPE]}.. \n')
 
-
-def main(code):
     input_dict = {}
-    if code == 'dev':
-        # input_dict = input_dict_dev_b
-        file_name = 'src_code/input/Archive/08/dev_a.txt'
-    elif code == 'prod':
-        # input_dict = input_dict_prod_b
-        file_name = 'src_code/input/Archive/08/prod.txt'
+    if ROUTINE[ROUTINE_TYPE] == 'dev':
+        if RUN_GET_DATA:
+            get_data.get_data(DAY, YEAR, ROUTINE[ROUTINE_TYPE])
+        file_name = 'src_code/input/' + DAY + '/dev.txt'
+    elif ROUTINE[ROUTINE_TYPE] == 'prod':
+        if RUN_GET_DATA:
+            get_data.get_data(DAY, YEAR, ROUTINE[ROUTINE_TYPE])
+        file_name = 'src_code/input/' + DAY + '/prod.txt'
 
     with open(file_name, 'r') as file:
-         text = file.read()
+        text_data = file.read()
 
-    solver(input_dict, text)
+    src_code.solver(input_dict, text_data)
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    control()
+    main()
 
