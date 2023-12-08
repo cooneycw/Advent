@@ -4,39 +4,55 @@ import copy
 def solver(inp_dict, data_file):
 
     data = parser(data_file)
-    hands = []
-    for row in data:
-        hand = Hands(row[1], int(row[2]))
-        hand.id_hand()
-        hands.append((hand.hand_value, hand.bid))
+    instructions = data['instructions']
+    directions = data['directions']
+    steps = None
+    start = 'AAA'
+    last = 'ZZZ'
+    curr = None
+    steps = 0
+    while True:
+        instruction = instructions[steps % len(instructions)]
+        if curr is None:
+            curr = start
+            steps = 0
+        if instruction == 'L':
+            curr = directions[curr][0]
+            steps += 1
+        elif instruction == 'R':
+            curr = directions[curr][1]
+            steps += 1
+        if curr == last:
+            break
 
-    hands.sort(key=lambda x: x[0])
-    answer = 0
-    for i, hand in enumerate(hands):
-        answer += hand[1] * (i+1)
-
-    print(f'sum product: {answer}')
-    #print(f'winning: \n{winning_combos_det}')
-    #print(f'losing: \n{losing_combos_det}')
+    print(f'steps: {steps}')
 
     return
 
 
 def parser(data_file):
     row = 0
-    ret_data = []
+    ret_data = dict()
+    directions = dict()
 
     while True:
         line_end = data_file.find('\n')
         if line_end == -1:
             break
         line = data_file[0:line_end]
-        item_01 = line[0:5]
-        item_02 = line[6:line_end]
-        ret_data.append((row,item_01, item_02))
+        if row == 0:
+            instructions = list(line)
+            ret_data['instructions'] = instructions
+        if row == 1:
+            pass
+        if row > 1:
+            left = line[line.find('(') + 1:line.find('(') + 1 + 3]
+            right = line[line.find(')') - 3:line.find(')')]
+            directions[line[0:3]] = (left, right)
+
         data_file = data_file[line_end+1:]
         row += 1
-
+    ret_data['directions'] = directions
     return ret_data
 
 

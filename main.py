@@ -1,14 +1,15 @@
 import importlib
 DAY = '08'
 RUN_GET_DATA = True  # True = create dev and prod files
+PART = 'B'
 ROUTINE_TYPE = 1  # 0 = dev; 1 = prod
 
 YEAR = 2023
 ROUTINE = ['dev', 'prod']
 
-if ROUTINE[ROUTINE_TYPE] == 'dev':
+if PART == 'A':
     module_name = 'src_code.code' + DAY + '.assign_a'
-elif ROUTINE[ROUTINE_TYPE] == 'prod':
+elif PART == 'B':
     module_name = 'src_code.code' + DAY + '.assign_b'
 
 src_code = importlib.import_module(module_name)
@@ -19,13 +20,13 @@ def main():
     print(f'\nExecuting day {DAY} routine in {ROUTINE[ROUTINE_TYPE]}.. \n')
 
     input_dict = {}
+    if RUN_GET_DATA:
+        get_data.get_data(DAY, YEAR, ROUTINE[0])
+        get_data.get_data(DAY, YEAR, ROUTINE[1])
+
     if ROUTINE[ROUTINE_TYPE] == 'dev':
-        if RUN_GET_DATA:
-            get_data.get_data(DAY, YEAR, ROUTINE[ROUTINE_TYPE])
         file_name = 'src_code/input/' + DAY + '/dev.txt'
     elif ROUTINE[ROUTINE_TYPE] == 'prod':
-        if RUN_GET_DATA:
-            get_data.get_data(DAY, YEAR, ROUTINE[ROUTINE_TYPE])
         file_name = 'src_code/input/' + DAY + '/prod.txt'
 
     with open(file_name, 'r') as file:
