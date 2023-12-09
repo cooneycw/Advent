@@ -1,6 +1,6 @@
 import importlib
-DAY = '08'
-RUN_GET_DATA = True  # True = create dev and prod files
+DAY = '09'
+RUN_GET_DATA = False  # True = create dev and prod files
 PART = 'B'
 ROUTINE_TYPE = 1  # 0 = dev; 1 = prod
 
@@ -38,4 +38,3 @@ def main():
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     main()
-
