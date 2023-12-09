@@ -20,11 +20,11 @@ def solver(inp_dict, data_file):
         process_row = copy.deepcopy(new_row)
         for k in range(len(new_row)-1, -1, -1):
             if k == len(new_row) - 1:
-                add_val = process_row[k][0]
+                add_val = process_row[k][-1]
             else:
                 add_val = l_extend_val
-            extend_val = process_row[k][0] - add_val
-            process_row[k].insert(0, extend_val)
+            extend_val = process_row[k][-1] + add_val
+            process_row[k].append(extend_val)
             if k == 0:
                 history.append(extend_val)
             l_extend_val = extend_val

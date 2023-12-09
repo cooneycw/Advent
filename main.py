@@ -1,8 +1,8 @@
 import importlib
-DAY = '09'
-RUN_GET_DATA = False  # True = create dev and prod files
-PART = 'B'
-ROUTINE_TYPE = 1  # 0 = dev; 1 = prod
+DAY = '10'
+RUN_GET_DATA = True  # True = create dev and prod files
+PART = 'A'
+ROUTINE_TYPE = 0  # 0 = dev; 1 = prod
 
 YEAR = 2023
 ROUTINE = ['dev', 'prod']
