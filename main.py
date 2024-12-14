@@ -1,10 +1,10 @@
 import importlib
-DAY = '10'
-RUN_GET_DATA = False  # True = create dev and prod files
+DAY = '12'
+RUN_GET_DATA = True  # True = create dev and prod files
 PART = 'A'
-ROUTINE_TYPE = 1  # 0 = dev; 1 = prod
+ROUTINE_TYPE = 0  # 0 = dev; 1 = prod
 
-YEAR = 2023
+YEAR = 2024
 ROUTINE = ['dev', 'prod']
 
 if PART == 'A':
